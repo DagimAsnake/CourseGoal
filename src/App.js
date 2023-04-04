@@ -1,28 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CourseGoalList from './components/CourseGoals/CourseGoalList/CourseGoalList';
 import CourseInput from './components/CourseGoals/CourseInput/CourseInput';
 import './App.css';
 
 const App = () => {
-  const [courseGoals, setCourseGoals] = useState([
-    { text: 'Do all exercises!', id: 'g1' },
-    { text: 'Finish the course!', id: 'g2' }
-  ]);
+  const [courseGoals, setCourseGoals] = useState([]);
+  const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    const datafetch = async () => {
+      const response = await fetch("http://localhost:8080/course/get", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        console.log("something is wrong");
+      }
+      const data = await response.json();
+      setCourseGoals(data.msg)
+      console.log(data);
+    };
+    datafetch();
+  }, []);
 
   const addGoalHandler = enteredText => {
-    setCourseGoals(prevGoals => {
-      const updatedGoals = [...prevGoals];
-      updatedGoals.unshift({ text: enteredText, id: Math.random().toString() });
-      return updatedGoals;
-    });
+    
+    const signUpEmployee = async () => {
+      const response = await fetch("http://localhost:8080/course/post", {
+        method: "POST",
+        body: JSON.stringify({
+          text: enteredText 
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+
+      if (!response.ok) {
+        console.log("something is wrong");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+      setMessage(data.msg)
+      
+    }
+    signUpEmployee()
+    
   };
 
   const deleteItemHandler = goalId => {
-    setCourseGoals(prevGoals => {
-      const updatedGoals = prevGoals.filter(goal => goal.id !== goalId);
-      return updatedGoals;
-    });
+
+    const AssignedTask = async () => {
+      const response = await fetch(`http://localhost:8080/course/delete/${goalId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        console.log("Something went wrong");
+      }
+      const data = await response.json();
+
+      console.log(data);
+      setMessage(data.msg)
+    };
+
+    AssignedTask();
   };
 
   let content = (
@@ -41,6 +89,7 @@ const App = () => {
         <CourseInput onAddGoal={addGoalHandler} />
       </section>
       <section id="goals">
+        {message}
         {content}
         {/* {courseGoals.length > 0 && (
           <CourseGoalList
@@ -52,6 +101,6 @@ const App = () => {
       </section>
     </div>
   );
-};
+}
 
-export default App;
+export default App

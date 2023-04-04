@@ -8,8 +8,8 @@ const CourseGoalList = props => {
     <ul className="goal-list">
       {props.items.map(goal => (
         <CourseGoalItem
-          key={goal.id}
-          id={goal.id}
+          key={goal._id}
+          id={goal._id}
           onDelete={props.onDeleteItem}
         >
           {goal.text}
