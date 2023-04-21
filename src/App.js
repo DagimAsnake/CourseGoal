@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     const datafetch = async () => {
-      const response = await fetch("http://localhost:8080/course/get", {
+      const response = await fetch("https://coursegoalbackend.onrender.com/course/get", {
         headers: {
           "Content-Type": "application/json",
         },
