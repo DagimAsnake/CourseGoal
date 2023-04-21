@@ -28,7 +28,7 @@ const App = () => {
   const addGoalHandler = enteredText => {
     
     const signUpEmployee = async () => {
-      const response = await fetch("http://localhost:8080/course/post", {
+      const response = await fetch("https://coursegoalbackend.onrender.com/course/post", {
         method: "POST",
         body: JSON.stringify({
           text: enteredText 
@@ -55,7 +55,7 @@ const App = () => {
   const deleteItemHandler = goalId => {
 
     const AssignedTask = async () => {
-      const response = await fetch(`http://localhost:8080/course/delete/${goalId}`, {
+      const response = await fetch(`https://coursegoalbackend.onrender.com/course/delete/${goalId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
